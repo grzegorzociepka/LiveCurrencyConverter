@@ -6,6 +6,7 @@ namespace LiveCurrencyConverter.Services
 {
     public class NBPApiService : INBPApiService
     {
+        
         public List<RateDTO> getRates()
         {
             throw new System.NotImplementedException();

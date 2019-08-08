@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using LiveCurrencyConverter.DTO;
 
 namespace LiveCurrencyConverter.Entities
 {
@@ -10,8 +11,9 @@ namespace LiveCurrencyConverter.Entities
         public string Description { get; private set; }
         public DateTime Date { get; private set; }
 
-        public Log()
+        public Log(LogDTO logDto)
         {
+            Description = logDto.Description;
             Date = DateTime.Now;
         }
 
