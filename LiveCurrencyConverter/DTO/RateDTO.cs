@@ -11,6 +11,6 @@ namespace LiveCurrencyConverter.DTO
         [JsonProperty("bid")]
         public decimal Bid { get; set; }
         [JsonProperty("set")]
-        public decimal Set { get; set; }
+        public decimal Ask { get; set; }
     }
 }
