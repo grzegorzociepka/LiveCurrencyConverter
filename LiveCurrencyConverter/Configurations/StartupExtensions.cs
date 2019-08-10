@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Reflection;
+using LiveCurrencyConverter.Services;
+using LiveCurrencyConverter.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -49,6 +51,11 @@ namespace LiveCurrencyConverter.Configurations
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "JuniorStart API V1");
                 c.RoutePrefix = string.Empty;
             });
+        }
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            services.AddScoped<ILogService, LogService>();
+            services.AddScoped<INBPApiService, NBPApiService>();
         }
         
     }

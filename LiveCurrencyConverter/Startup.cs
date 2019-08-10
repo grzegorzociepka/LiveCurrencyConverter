@@ -29,6 +29,7 @@ namespace LiveCurrencyConverter
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.ConfigureCors();
             services.ConfigureSwagger();
+            services.ConfigureServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
