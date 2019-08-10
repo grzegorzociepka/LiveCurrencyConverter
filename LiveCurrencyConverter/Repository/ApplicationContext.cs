@@ -7,9 +7,9 @@ namespace LiveCurrencyConverter.Repository
     {
         public DbSet<Log> Logs { get; set; }
         
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
         {
-            optionsBuilder.UseSqlite("Filename=./blog.db");
         }
+
     }
 }
