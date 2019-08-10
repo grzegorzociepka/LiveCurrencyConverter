@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LiveCurrencyConverter.DTO;
 
 namespace LiveCurrencyConverter.Services.Interfaces
 {
     public interface INBPApiService
     {
-        List<RateDTO> getRates();
-        
+        Task<List<RateDTO>> getRates();
+        Task<decimal> Convert(string from, string to, decimal amount);
     }
 }
