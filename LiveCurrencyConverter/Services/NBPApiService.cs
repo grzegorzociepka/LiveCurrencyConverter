@@ -13,22 +13,31 @@ namespace LiveCurrencyConverter.Services
     {
         public static Uri baseAddress = new Uri("http://api.nbp.pl/api/exchangerates/");
         private readonly ILogService _logService;
+        private HttpClient client;
 
         public NBPApiService(ILogService logService)
         {
             _logService = logService;
+            client = new HttpClient();
+            client.BaseAddress = baseAddress;
         }
 
         public async Task<List<RateDTO>> getRates()
         {
-            HttpClient client = createHttpClient();
-
             string response = await getResponse("tables/c", client);
             addLog("Get all rates request has been sent");
 
             AllRatesResponseDTO deserializedResponse =
                 JsonConvert.DeserializeObject<List<AllRatesResponseDTO>>(response).FirstOrDefault();
-            return deserializedResponse.Rates.ToList();
+            if (!(deserializedResponse is null))
+            {
+                return deserializedResponse.Rates.ToList();
+            }
+            else
+            {
+                addLog("Deserialization failed in method getRates");
+                return new List<RateDTO>();
+            }
         }
 
         public async Task<decimal> Convert(string from, string to, decimal amount)
@@ -45,17 +54,23 @@ namespace LiveCurrencyConverter.Services
 
         private async Task<RateDTO> getRateToCalculate(string from)
         {
-            HttpClient client = createHttpClient();
-
             string response = await getResponse(string.Format("rates/c/{0}", from), client);
             addLog(string.Format("External - Get rate with code {0}", from));
             SingleRateResponseDTO deserializedResponse = JsonConvert.DeserializeObject<SingleRateResponseDTO>(response);
-
-            var rateToReturn = new RateDTO();
-            rateToReturn.Bid = deserializedResponse.Rates.FirstOrDefault().Bid;
-            rateToReturn.Ask = deserializedResponse.Rates.FirstOrDefault().Ask;
-            rateToReturn.Code = deserializedResponse.Code;
-            return rateToReturn;
+            if (!(deserializedResponse is null))
+            {
+                var rateToReturn = new RateDTO(){
+                    Bid = deserializedResponse.Rates.FirstOrDefault().Bid,
+                    Ask = deserializedResponse.Rates.FirstOrDefault().Ask,
+                    Code =  deserializedResponse.Code
+                };
+                return rateToReturn;
+            }
+            else
+            {
+                addLog("Deserialization failed in method getRateToCalculate");
+                return new RateDTO();  
+            }
         }
 
         private void addLog(string desc)
