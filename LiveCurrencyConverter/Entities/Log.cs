@@ -15,7 +15,7 @@ namespace LiveCurrencyConverter.Entities
         {
         }
 
-        private string Description { get; set; }
+        public string Description { get; set; }
         public DateTime Date { get; set; }
 
         [Column("LogId")]
