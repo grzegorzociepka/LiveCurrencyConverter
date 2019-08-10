@@ -1,30 +1,29 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using LiveCurrencyConverter.DTO;
 
 namespace LiveCurrencyConverter.Entities
 {
     public class Log : IEntity
     {
-        [Column("LogId")]
-        public int Id { get; set; }
-        public string Description { get; private set; }
-        public DateTime Date { get; private set; }
-
-        public Log(LogDTO logDto)
+        public Log(string desc)
         {
-            Description = logDto.Description;
+            Description = desc;
             Date = DateTime.Now;
         }
 
         public Log()
         {
-            
         }
+
+        private string Description { get; set; }
+        public DateTime Date { get; set; }
+
+        [Column("LogId")]
+        public int Id { get; set; }
+
         public void setDescription(string desc)
         {
             Description = desc;
-            
         }
     }
 }

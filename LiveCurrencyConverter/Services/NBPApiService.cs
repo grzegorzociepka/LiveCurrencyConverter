@@ -11,8 +11,8 @@ namespace LiveCurrencyConverter.Services
 {
     public class NBPApiService : INBPApiService
     {
-        private readonly ILogService _logService;
         public static Uri baseAddress = new Uri("http://api.nbp.pl/api/exchangerates/");
+        private readonly ILogService _logService;
 
         public NBPApiService(ILogService logService)
         {
@@ -21,46 +21,36 @@ namespace LiveCurrencyConverter.Services
 
         public async Task<List<RateDTO>> getRates()
         {
-            var client = new HttpClient();
-            client.BaseAddress = baseAddress;
-            var request = await client.GetAsync(string.Format("tables/c"));
+            HttpClient client = createHttpClient();
+
+            string response = await getResponse("tables/c", client);
             addLog("Get all rates request has been sent");
-            var response = await request.Content.ReadAsStringAsync();
-            if (request.IsSuccessStatusCode)
-            {
-                var deserializedResponse =
-                    JsonConvert.DeserializeObject<List<AllRatesResponseDTO>>(response).FirstOrDefault();
-                return deserializedResponse.Rates.ToList();
-            }
-            else
-            {
-                addLog("External - Bad request on getRates");
-                return new List<RateDTO>();
-            }
+
+            AllRatesResponseDTO deserializedResponse =
+                JsonConvert.DeserializeObject<List<AllRatesResponseDTO>>(response).FirstOrDefault();
+            return deserializedResponse.Rates.ToList();
         }
 
         public async Task<decimal> Convert(string from, string to, decimal amount)
         {
-            var firstRate = await getRateToCalculate(from);
-            var secondRate = await getRateToCalculate(to);
-            var sold = firstRate.Ask * amount;
-            var bought = sold / secondRate.Bid;
-            
-            addLog(string.Format("Internal - Conversion from {0} to {1}, amount {2}",from,to,amount));
-            
+            RateDTO firstRate = await getRateToCalculate(from);
+            RateDTO secondRate = await getRateToCalculate(to);
+            decimal sold = firstRate.Ask * amount;
+            decimal bought = sold / secondRate.Bid;
+
+            addLog(string.Format("Internal - Conversion from {0} to {1}, amount {2}", from, to, amount));
+
             return Math.Round(bought, 4);
         }
 
         private async Task<RateDTO> getRateToCalculate(string from)
         {
-            var client = new HttpClient();
-            client.BaseAddress = baseAddress;
-            var request = await client.GetAsync(string.Format("rates/c/{0}", from));
-            addLog(string.Format("External - Get rate with code {0}",from));
-            
-            var response = await request.Content.ReadAsStringAsync();
-            var deserializedResponse = JsonConvert.DeserializeObject<SingleRateResponseDTO>(response);
-            
+            HttpClient client = createHttpClient();
+
+            string response = await getResponse(string.Format("rates/c/{0}", from), client);
+            addLog(string.Format("External - Get rate with code {0}", from));
+            SingleRateResponseDTO deserializedResponse = JsonConvert.DeserializeObject<SingleRateResponseDTO>(response);
+
             var rateToReturn = new RateDTO();
             rateToReturn.Bid = deserializedResponse.Rates.FirstOrDefault().Bid;
             rateToReturn.Ask = deserializedResponse.Rates.FirstOrDefault().Ask;
@@ -70,9 +60,20 @@ namespace LiveCurrencyConverter.Services
 
         private void addLog(string desc)
         {
-            var log = new LogDTO();
-            log.Description = desc;
-            _logService.AddLog(log);
+            _logService.AddLog(desc);
+        }
+
+        private HttpClient createHttpClient()
+        {
+            var client = new HttpClient();
+            client.BaseAddress = baseAddress;
+            return client;
+        }
+
+        private async Task<string> getResponse(string requestUrl, HttpClient client)
+        {
+            var request = await client.GetAsync(requestUrl);
+            return await request.Content.ReadAsStringAsync();
         }
     }
 }

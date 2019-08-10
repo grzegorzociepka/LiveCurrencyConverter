@@ -5,19 +5,19 @@ namespace LiveCurrencyConverter.DTO
 {
     public class AllRatesResponseDTO
     {
-        [JsonProperty("table")]
+        [JsonProperty("table")] 
         public string Table { get; set; }
 
-        [JsonProperty("no")]
+        [JsonProperty("no")] 
         public string No { get; set; }
 
-        [JsonProperty("tradingDate")]
+        [JsonProperty("tradingDate")] 
         public DateTimeOffset TradingDate { get; set; }
 
         [JsonProperty("effectiveDate")]
         public DateTimeOffset EffectiveDate { get; set; }
 
-        [JsonProperty("rates")]
+        [JsonProperty("rates")] 
         public RateDTO[] Rates { get; set; }
     }
 }

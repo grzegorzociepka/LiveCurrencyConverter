@@ -4,7 +4,7 @@ namespace LiveCurrencyConverter.DTO
 {
     public class SingleRateResponseDTO
     {
-        [JsonProperty("table")]
+        [JsonProperty("table")] 
         public string Table { get; set; }
 
         [JsonProperty("currency")]
@@ -13,7 +13,7 @@ namespace LiveCurrencyConverter.DTO
         [JsonProperty("code")]
         public string Code { get; set; }
 
-        [JsonProperty("rates")]
+        [JsonProperty("rates")] 
         public SingleRateDTO[] Rates { get; set; }
     }
 }

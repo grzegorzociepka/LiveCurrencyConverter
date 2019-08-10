@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using LiveCurrencyConverter.DTO;
 using LiveCurrencyConverter.Services.Interfaces;
@@ -7,20 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace LiveCurrencyConverter.Controllers
 {
     /// <summary>
-    /// Live currency converter
+    ///     Live currency converter
     /// </summary>
     [Route("exchange/")]
     [ApiController]
     public class ExchangeController : ControllerBase
     {
         private readonly INBPApiService _nbpApiService;
+
         public ExchangeController(INBPApiService nbpApiService)
         {
             _nbpApiService = nbpApiService;
         }
-        
+
         /// <summary>
-        /// Get all available rates
+        ///     Get all available rates
         /// </summary>
         /// <returns></returns>
         /// <response code="200">Returns recruitment info</response>
@@ -31,17 +31,17 @@ namespace LiveCurrencyConverter.Controllers
         {
             return Ok(await _nbpApiService.getRates());
         }
+
         /// <summary>
-        /// Convert currency
+        ///     Convert currency
         /// </summary>
         /// <remarks>
-        /// Sample request:
-        /// 
+        ///     Sample request:
         ///     POST /calculate
         ///     {
-        ///        "From": "USD",
-        ///        "To: "EUR",
-        ///        "Amount": 20,
+        ///     "From": "USD",
+        ///     "To: "EUR",
+        ///     "Amount": 20,
         ///     }
         /// </remarks>
         /// <param name="requestModel">request object</param>

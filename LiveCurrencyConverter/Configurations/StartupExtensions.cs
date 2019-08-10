@@ -27,12 +27,12 @@ namespace LiveCurrencyConverter.Configurations
                     });
             });
         }
-        
+
         public static void ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo()
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "LiveCurrencyConverter API",
@@ -45,6 +45,7 @@ namespace LiveCurrencyConverter.Configurations
                 options.IncludeXmlComments(xmlPath);
             });
         }
+
         public static void EnableSwagger(this IApplicationBuilder app)
         {
             app.UseSwagger();
@@ -54,18 +55,16 @@ namespace LiveCurrencyConverter.Configurations
                 c.RoutePrefix = string.Empty;
             });
         }
+
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<INBPApiService, NBPApiService>();
         }
+
         public static void ConfigureDatabase(this IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options =>
-            {
-                options.UseSqlite("Filename=./exchange.db");
-            });
+            services.AddDbContext<ApplicationContext>(options => { options.UseSqlite("Filename=./exchange.db"); });
         }
-        
     }
 }

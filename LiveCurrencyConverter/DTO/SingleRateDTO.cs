@@ -5,16 +5,16 @@ namespace LiveCurrencyConverter.DTO
 {
     public class SingleRateDTO
     {
-        [JsonProperty("no")]
+        [JsonProperty("no")] 
         public string No { get; set; }
 
-        [JsonProperty("effectiveDate")]
+        [JsonProperty("effectiveDate")] 
         public DateTimeOffset EffectiveDate { get; set; }
 
-        [JsonProperty("bid")]
+        [JsonProperty("bid")] 
         public decimal Bid { get; set; }
 
-        [JsonProperty("ask")]
+        [JsonProperty("ask")] 
         public decimal Ask { get; set; }
     }
 }

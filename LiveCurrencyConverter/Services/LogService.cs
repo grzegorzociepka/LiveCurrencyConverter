@@ -1,4 +1,3 @@
-using LiveCurrencyConverter.DTO;
 using LiveCurrencyConverter.Entities;
 using LiveCurrencyConverter.Repository;
 using LiveCurrencyConverter.Services.Interfaces;
@@ -13,9 +12,10 @@ namespace LiveCurrencyConverter.Services
         {
             _context = context;
         }
-        public void AddLog(LogDTO logDto)
+
+        public void AddLog(string desc)
         {
-            var logToInsert = new Log(logDto);
+            var logToInsert = new Log(desc);
             _context.Logs.Add(logToInsert);
             _context.SaveChanges();
         }

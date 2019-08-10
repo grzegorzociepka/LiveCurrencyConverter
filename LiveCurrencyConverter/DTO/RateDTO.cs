@@ -4,13 +4,16 @@ namespace LiveCurrencyConverter.DTO
 {
     public class RateDTO
     {
-        [JsonProperty("currency")]
+        [JsonProperty("currency")] 
         public string Currency { get; set; }
-        [JsonProperty("code")]
+
+        [JsonProperty("code")] 
         public string Code { get; set; }
+
         [JsonProperty("bid")]
         public decimal Bid { get; set; }
-        [JsonProperty("ask")]
+
+        [JsonProperty("ask")] 
         public decimal Ask { get; set; }
     }
 }
