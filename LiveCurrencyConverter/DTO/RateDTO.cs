@@ -10,7 +10,7 @@ namespace LiveCurrencyConverter.DTO
         public string Code { get; set; }
         [JsonProperty("bid")]
         public decimal Bid { get; set; }
-        [JsonProperty("set")]
+        [JsonProperty("ask")]
         public decimal Ask { get; set; }
     }
 }
