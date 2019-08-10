@@ -17,6 +17,10 @@ namespace LiveCurrencyConverter.Entities
             Date = DateTime.Now;
         }
 
+        public Log()
+        {
+            
+        }
         public void setDescription(string desc)
         {
             Description = desc;

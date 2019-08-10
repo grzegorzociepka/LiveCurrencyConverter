@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LiveCurrencyConverter.DTO;
 using LiveCurrencyConverter.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,10 +20,10 @@ namespace LiveCurrencyConverter.Controllers
         {
             return Ok(await _nbpApiService.getRates());
         }
-        [HttpPost]
-        public async Task<ActionResult> Calculate(string from,string to,decimal amount)
+        [HttpPost("/calculate")]
+        public async Task<ActionResult> Calculate([FromBody] RequestDTO requestModel)
         {
-            return Ok(await _nbpApiService.Convert(from, to, amount));
+            return Ok(await _nbpApiService.Convert(requestModel.From, requestModel.To, requestModel.Amount));
         }
     }
 }

@@ -30,6 +30,7 @@ namespace LiveCurrencyConverter
             services.ConfigureCors();
             services.ConfigureSwagger();
             services.ConfigureServices();
+            services.ConfigureDatabase();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

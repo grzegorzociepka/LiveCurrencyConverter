@@ -1,9 +1,11 @@
 using System;
 using System.IO;
 using System.Reflection;
+using LiveCurrencyConverter.Repository;
 using LiveCurrencyConverter.Services;
 using LiveCurrencyConverter.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -33,7 +35,7 @@ namespace LiveCurrencyConverter.Configurations
                 options.SwaggerDoc("v1", new OpenApiInfo()
                 {
                     Version = "v1",
-                    Title = "JuniorStart API",
+                    Title = "LiveCurrencyConverter API",
                     Description = "Documentation for API",
                     TermsOfService = null
                 });
@@ -48,7 +50,7 @@ namespace LiveCurrencyConverter.Configurations
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "JuniorStart API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "LiveCurrencyConverter API V1");
                 c.RoutePrefix = string.Empty;
             });
         }
@@ -56,6 +58,13 @@ namespace LiveCurrencyConverter.Configurations
         {
             services.AddScoped<ILogService, LogService>();
             services.AddScoped<INBPApiService, NBPApiService>();
+        }
+        public static void ConfigureDatabase(this IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationContext>(options =>
+            {
+                options.UseSqlite("Filename=./exchange.db");
+            });
         }
         
     }
