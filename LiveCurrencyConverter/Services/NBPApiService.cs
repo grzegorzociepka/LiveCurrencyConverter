@@ -29,15 +29,13 @@ namespace LiveCurrencyConverter.Services
 
             AllRatesResponseDTO deserializedResponse =
                 JsonConvert.DeserializeObject<List<AllRatesResponseDTO>>(response).FirstOrDefault();
-            if (!(deserializedResponse is null))
-            {
-                return deserializedResponse.Rates.ToList();
-            }
-            else
+            if (deserializedResponse is null)
             {
                 addLog("Deserialization failed in method getRates");
                 return new List<RateDTO>();
             }
+
+            return deserializedResponse.Rates.ToList();
         }
 
         public async Task<decimal> Convert(string from, string to, decimal amount)
@@ -57,32 +55,23 @@ namespace LiveCurrencyConverter.Services
             string response = await getResponse(string.Format("rates/c/{0}", from), client);
             addLog(string.Format("External - Get rate with code {0}", from));
             SingleRateResponseDTO deserializedResponse = JsonConvert.DeserializeObject<SingleRateResponseDTO>(response);
-            if (!(deserializedResponse is null))
-            {
-                var rateToReturn = new RateDTO(){
-                    Bid = deserializedResponse.Rates.FirstOrDefault().Bid,
-                    Ask = deserializedResponse.Rates.FirstOrDefault().Ask,
-                    Code =  deserializedResponse.Code
-                };
-                return rateToReturn;
-            }
-            else
+            if (deserializedResponse is null)
             {
                 addLog("Deserialization failed in method getRateToCalculate");
-                return new RateDTO();  
+                return new RateDTO(); 
             }
+            
+            var rateToReturn = new RateDTO(){
+                Bid = deserializedResponse.Rates.FirstOrDefault().Bid,
+                Ask = deserializedResponse.Rates.FirstOrDefault().Ask,
+                Code =  deserializedResponse.Code
+            };
+            return rateToReturn;
         }
 
         private void addLog(string desc)
         {
             _logService.AddLog(desc);
-        }
-
-        private HttpClient createHttpClient()
-        {
-            var client = new HttpClient();
-            client.BaseAddress = baseAddress;
-            return client;
         }
 
         private async Task<string> getResponse(string requestUrl, HttpClient client)
