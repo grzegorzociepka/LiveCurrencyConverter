@@ -11,7 +11,7 @@ namespace LiveCurrencyConverter.Services
 {
     public class NBPApiService : INBPApiService
     {
-        public static Uri baseAddress = new Uri("http://api.nbp.pl/api/exchangerates/");
+        private static Uri baseAddress = new Uri("http://api.nbp.pl/api/exchangerates/");
         private readonly ILogService _logService;
         private HttpClient client;
 
